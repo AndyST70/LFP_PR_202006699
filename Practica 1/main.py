@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 ##########----------------------------------------------------------------
 lst_aux_result = [] 
 lst_aux_Pro = []
-arre_produ_final  = []
+arre_produ_final  = [] # datos a imprimir
+t1_result_aux = []
+t2_result_aux = []
 #Reseteamos nuestras variables
 mes_2 = ""
 año_2 = ""
@@ -96,8 +98,8 @@ if __name__ == '__main__':
                "\n 2. Cargar instrucciones",
                "\n 3. Analizar",
                "\n 4. Reportes",
-               "\n 5. Salir",
-               "\n 6. Probar función",
+               "\n 5. Salir"
+
                "\n ------------------------------",
                
                )
@@ -106,6 +108,8 @@ if __name__ == '__main__':
             
 # convertir datos e imprimir        
             txt = cargar()
+            lst_aux_result = [] #reiniciamos para ciclos
+            lst_aux_Pro = [] #reiniciamos para ciclos
             lista = [] 
             lista_letters =[] # guardamos contenido
             ls_Mes = [] # guardamos
@@ -163,15 +167,19 @@ if __name__ == '__main__':
                             Nombre_producto = pi_pro[0].replace("[", "")
 
                             Nombre_Producto = Nombre_producto.replace(a1,"") 
-                            lst_aux_Pro.append(Nombre_Producto)
+                            lst_aux_Pro.append(Nombre_Producto) # productos
+                            #print(lst_aux_Pro) # prueba para verificar proceso
                             p1 = pi_pro[1]#p1 = precio
                             p2 = pi_pro[2].replace("]", "")#p2 = cantidad de producto
+                            t1_result_aux.append(p1) # precio
+                            t2_result_aux.append(p2) # cantidad
                             base = float(p1) *float(p2)
                           #  lst_aux_result.append = list(map (lambda x, y: x*y, p1, p2))
-                            lst_aux_result.append(base) 
+                            lst_aux_result.append(base) # totales 
                             print ("Producto : "+Nombre_Producto + " Precio : Q. "+ p1 + " Cantidad : " + p2)
                             #print ("resultados: "+lst_aux_result) #prueba de impresión
-                        else: break 
+                        else: 
+                            break 
                     print("....")    
 
         elif opc =="2":          
@@ -288,7 +296,6 @@ if __name__ == '__main__':
             #Grafica de PIE
             axP.pie(lst_aux_result, labels=lst_aux_Pro )
             axP.set_xlabel(TituloX_Final, fontdict = {'fontweight':'bold', 'fontsize':13, 'color':'blue'})
-            axP.set_ylabel(TituloY_Final, fontdict = {'fontweight':'bold', 'fontsize':13, 'color':'red'})
             #
             axP.grid(axis='y', color='darkgray', linestyle='dashed')
             axP.set_title(Titulo_Final)
@@ -297,22 +304,79 @@ if __name__ == '__main__':
                 figB.savefig("./graficaBarras.png")
             elif Grafica_Final == "barras":
                 figB.savefig("./graficaBarras.png")
-
             elif Grafica_Final == "Lineas":
                 figL.savefig("./graficaLineas.png")
             elif Grafica_Final == "lineas":
                 figL.savefig("./graficaLineas.png")
 
-                
             elif Grafica_Final == "Pie":
                 figP.savefig("./graficaPie.png")
             elif Grafica_Final == "pie":
-                figP.savefig("./graficaPie.png")
-                    
-        elif opc =="5":
-            cargar()
-        elif opc =="4:":
+                figP.savefig("./graficaPie.png")                  
+        
+        elif opc =="4":
+            print("su reporte se esta cargando")
+            print(" cargando.....")
+            print(" cargando ......")
             print("gracias por preferirnos")
-            break          
+            
+            ct1 = 0 # contador en uso
+            repo = open ("Reporte.html", "w")
+            label_1= '''<h1><em><strong>Bienvenido:&nbsp;</strong></em></h1>
+            <table border="1">
+            <tbody>
+            <tr>
+            <td><em><strong>Compa&ntilde;&iacute;a S.A.</strong></em></td>
+            <td><em><strong>Departamento de ventas&nbsp;</strong></em></td>
+            </tr>
+            <tr>
+            <td><em><strong>Nombre:</strong></em></td>
+            <td><em><strong>Andy Ezequiel Sanic Tiul</strong></em></td>
+            </tr>
+            <tr>
+            <td><em><strong>Carnet:</strong></em></td>
+            <td><em><strong>202006699</strong></em></td>
+            </tr>
+                </tbody>
+                    </table>
+                        <h2 style="text-align: center;"><strong><br />&nbsp;"Ventas"</strong></h2>
+                    <table style="border-style: solid; margin-left: auto; margin-right: auto; height: 19px;" border="1" width="572">
+                <tbody>
+            <tr style="height: 19px;">
+                <td style="width: 166.6px; height: 19px; text-align: center;">Producto</td>
+                <td style="width: 117.425px; height: 19px; text-align: center;">Precio</td>
+                <td style="width: 85.3125px; height: 19px; text-align: center;">Cantidad</td>
+                <td style="width: 176.663px; height: 19px; text-align: center;">Total</td>
+            </tr>
+            '''
+            # incluimos datos de la tabla para
+            label_2=''
+            for i in range(len(t1_result_aux)): # recorrer lista de la tabla
+                colum   = lst_aux_Pro[i]# guardamos los archivos al mismo nivel
+                colum_1 = t1_result_aux[i]# guardamos los archivos precio
+                colum_2 = t2_result_aux[i]# guardamos los archivos de cantidad
+                colum_3 = lst_aux_result[i]# guardamos los resultados 
+            
+                label_2 += '''
+                    <td style="width: 166.6px;">{}</td>
+                    <td style="width: 117.425px;">{}</td>
+                    <td style="width: 85.3125px;">{}</td>
+                    <td style="width: 176.663px;">{}</td>
+                    </tr>
+                    
+                '''.format(colum, colum_1, colum_2, colum_3)
+                
+            label_3 = '''
+            
+            </table>
+            '''
+
+
+            arc = label_1 + label_2 + label_3
+            repo.write(arc)
+            repo.close()
+         
+        elif opc =="5":
+            exit()      
         else:
             print(" no es una opción")
